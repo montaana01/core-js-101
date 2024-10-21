@@ -184,8 +184,8 @@ function isInsideCircle(circle, point) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  return str.split(('')).find((el, ind, arr) => (arr.findIndex((el2, ind2) => el2 === el && ind2 !== ind) === -1 ? el : null));
 }
 
 
@@ -414,8 +414,57 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  let line = [];
+  for (let row = 0; row < position.length; row += 1) {
+    for (let col = 0; col < position.length; col += 1) {
+      if (position[row][col] === 'X' || position[row][col] === '0') {
+        line.push(position[row][col]);
+      }
+      if (line.length === 3) {
+        if (line.every((val, i, arr) => val === arr[0])) {
+          return line[0];
+        }
+      }
+    }
+    line = [];
+  }
+  for (let col = 0; col < position.length; col += 1) {
+    for (let row = 0; row < position.length; row += 1) {
+      if (position[row][col] === 'X' || position[row][col] === '0') {
+        line.push(position[row][col]);
+      }
+      if (line.length === 3) {
+        if (line.every((val, i, arr) => val === arr[0])) {
+          return line[0];
+        }
+      }
+    }
+    line = [];
+  }
+  for (let i = 0; i < position.length; i += 1) {
+    if (position[i][i] === 'X' || position[i][i] === '0') {
+      line.push(position[i][i]);
+    }
+    if (line.length === 3) {
+      if (line.every((val, num, arr) => val === arr[0])) {
+        return line[0];
+      }
+    }
+  }
+  line = [];
+  for (let i = 0; i < position.length; i += 1) {
+    if (position[i][position.length - i - 1] === 'X' || position[i][position.length - i - 1] === '0') {
+      line.push(position[i][position.length - i - 1]);
+    }
+    if (line.length === 3) {
+      if (line.every((val, num, arr) => val === arr[0])) {
+        return line[0];
+      }
+    }
+  }
+
+  return undefined;
 }
 
 
