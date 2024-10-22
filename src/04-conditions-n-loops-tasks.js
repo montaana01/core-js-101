@@ -211,8 +211,12 @@ function findFirstSingleChar(str) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  const start = Math.min(a, b);
+  const end = Math.max(a, b);
+  const startBracket = isStartIncluded ? '[' : '(';
+  const endBracket = isEndIncluded ? ']' : ')';
+  return `${startBracket}${start}, ${end}${endBracket}`;
 }
 
 
@@ -228,8 +232,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reverse().join('');
 }
 
 
@@ -245,8 +249,8 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return parseInt(num.toString().split('').reverse().join(''), 10);
 }
 
 
@@ -314,8 +318,33 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const bracketsConfig = [['(', ')'], ['[', ']'], ['{', '}'], ['<', '>']];
+  const waitingList = [];
+
+  const isOpeningBracket = (bracket) => bracketsConfig.some(([open]) => bracket === open);
+  const getClosingBracket = (bracket) => {
+    const pair = bracketsConfig.find(([open]) => open === bracket);
+    return pair ? pair[1] : null;
+  };
+
+  return str.split('').every((bracket) => {
+    if (isOpeningBracket(bracket)) {
+      const close = getClosingBracket(bracket);
+      if (bracket === close) {
+        if (waitingList.length > 0 && waitingList[waitingList.length - 1] === bracket) {
+          waitingList.pop();
+        } else {
+          waitingList.push(close);
+        }
+      } else {
+        waitingList.push(close);
+      }
+      return true;
+    }
+
+    return waitingList.length !== 0 && waitingList.pop() === bracket;
+  }) && waitingList.length === 0;
 }
 
 
@@ -339,8 +368,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 
@@ -356,8 +385,20 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(paths) {
+  if (paths.length === 0) return '';
+
+  const commonPath = paths[0].split('/');
+  for (let i = 1; i < paths.length; i += 1) {
+    const currentPath = paths[i].split('/');
+    for (let j = 0; j < commonPath.length; j += 1) {
+      if (commonPath[j] !== currentPath[j]) {
+        commonPath.splice(j);
+        break;
+      }
+    }
+  }
+  return commonPath.length > 0 ? `${commonPath.join('/')}/` : '';
 }
 
 
