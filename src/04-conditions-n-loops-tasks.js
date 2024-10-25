@@ -259,7 +259,7 @@ function reverseInteger(num) {
  *
  * See algorithm here : https://en.wikipedia.org/wiki/Luhn_algorithm
  *
- * @param {number} ccn
+ * @param {number} cnn
  * @return {boolean}
  *
  * @example:
@@ -273,8 +273,8 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(ccn) {
-  const digits = String(ccn).split('').reverse().map(Number);
+function isCreditCardNumber(cnn) {
+  const digits = String(cnn).split('').reverse().map(Number);
   const sum = digits.reduce((acc, digit, index) => {
     if (index % 2 === 1) {
       const doubled = digit * 2;
@@ -301,8 +301,9 @@ function isCreditCardNumber(ccn) {
  */
 function getDigitalRoot(num) {
   let result = 0;
-  while (num > 9) {
-    result = String(num).split('').reduce((sum, digit) => sum + Number(digit), 0);
+  result = String(num).split('').reduce((sum, digit) => sum + Number(digit), 0);
+  if (result > 9) {
+    return getDigitalRoot(result);
   }
   return result;
 }
